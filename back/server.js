@@ -5,10 +5,10 @@ const http = require('http');
 const app = require('./app');
 
 // paramètrage du port avec la méthode set de Express
-app.set('port', process.env.PORT || 3000);
+app.set('port', 3000);
 
 // la méthode createServer prend en argument la fonction qui sera appelé à chaque requête reçu.
 const server = http.createServer(app);
 
 // le serveur écoute les requète sur le port
-server.listen(process.env.PORT ||3000);
+server.listen(3000);
