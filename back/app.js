@@ -29,12 +29,7 @@ app.use((req, res, next) => {
   });
 
 app.use("/api/auth", userRoutes);
+//app.use("/api/sauces", saucesRoutes);
 
-// route général    
-/*app.use("api/machin", truc) ((req, res) => {
-    res.status(201)
-    res.json({ message: "requète" })
-});
-*/
 // exportation de app.js pour pouvoir y accéder depuis un autre fichier
 module.exports = app;
