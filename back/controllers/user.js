@@ -20,7 +20,7 @@ exports.signup = (req, res, next) => {
             // sauvegarde le nouvel utilisateur dans la base de donnée
             createUser.save()
                 .then(() => res.status(201).json({
-                    message: 'Utilisateur crée !'
+                    message: 'Utilisateur créé !'
                 }))
                 .catch(error => res.status(400).json({ error }))
         })

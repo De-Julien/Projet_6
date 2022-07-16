@@ -13,5 +13,8 @@ http://localhost:3000/api/auth/signup
 ## La route POST pour se connecter
 http://localhost:3000/api/auth/login
 
-## La route POST pour sauce
+## La route POST pour créer les sauces
+http://localhost:3000/api/sauces
+
+## La route GET pour afficher un tableau contenant toutes les sauces
 http://localhost:3000/api/sauces
