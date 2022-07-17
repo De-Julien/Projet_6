@@ -4,6 +4,9 @@ const express = require('express');
 // importe le dossier controllers
 const userCtrl = require('../controllers/user');
 
+// importe le dossier middleware pour les autorisations
+const auth = require('../middleware/auth');
+
 // utilise la fonction router
 const router = express.Router();
 

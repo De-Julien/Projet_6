@@ -4,11 +4,15 @@ const express = require('express');
 // importe le dossier controllers
 const saucesCtrl = require('../controllers/sauces');
 
+// importe le dossier middleware pour les autorisations
+const auth = require('../middleware/auth');
+
 // utilise la fonction router
 const router = express.Router();
 
 router.post("/", saucesCtrl.postSauces);
 router.get("/", saucesCtrl.getAllSauces);
+router.get("/:id", saucesCtrl.getOneSauces);
 
 
 
