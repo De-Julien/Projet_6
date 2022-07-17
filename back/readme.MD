@@ -19,5 +19,8 @@ http://localhost:3000/api/sauces
 ## La route GET pour afficher un tableau contenant toutes les sauces
 http://localhost:3000/api/sauces
 
-## La route GET pour afficher une sauce en particulier
+## La route GET pour afficher la sauce selectionné par ID
+http://localhost:3000/api/sauces/_id
+
+## La route put pour modifier la sauce selectionné par ID
 http://localhost:3000/api/sauces/_id

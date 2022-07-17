@@ -13,6 +13,8 @@ const router = express.Router();
 router.post("/", saucesCtrl.postSauces);
 router.get("/", saucesCtrl.getAllSauces);
 router.get("/:id", saucesCtrl.getOneSauces);
+router.put("/:id", saucesCtrl.updateOneSauces);
+router.delete("/:id", saucesCtrl.deleteOneSauces);
 
 
 
