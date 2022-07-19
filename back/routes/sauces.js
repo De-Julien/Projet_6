@@ -7,14 +7,17 @@ const saucesCtrl = require('../controllers/sauces');
 // importe le dossier middleware pour les autorisations
 const auth = require('../middleware/auth');
 
+// importe le dossier middleware pour les autorisations
+const multer = require('../middleware/multer-config');
+
 // utilise la fonction router
 const router = express.Router();
 
-router.post("/", saucesCtrl.postSauces);
-router.get("/", saucesCtrl.getAllSauces);
-router.get("/:id", saucesCtrl.getOneSauces);
-router.put("/:id", saucesCtrl.updateOneSauces);
-router.delete("/:id", saucesCtrl.deleteOneSauces);
+router.post("/", auth, saucesCtrl.postSauces);
+router.get("/", auth, saucesCtrl.getAllSauces);
+router.get("/:id", auth, saucesCtrl.getOneSauces);
+router.put("/:id", auth, saucesCtrl.updateOneSauces);
+router.delete("/:id", auth, saucesCtrl.deleteOneSauces);
 
 
 
