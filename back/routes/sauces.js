@@ -8,7 +8,7 @@ const saucesCtrl = require('../controllers/sauces');
 const auth = require('../middleware/auth');
 
 // importe le dossier middleware pour les autorisations
-const multer = require('../middleware/multer-config');
+const multer = require('../middleware/multer');
 
 // utilise la fonction router
 const router = express.Router();
@@ -18,8 +18,6 @@ router.get("/", auth, saucesCtrl.getAllSauces);
 router.get("/:id", auth, saucesCtrl.getOneSauces);
 router.put("/:id", auth, saucesCtrl.updateOneSauces);
 router.delete("/:id", auth, saucesCtrl.deleteOneSauces);
-
-
 
 // exportation pour pouvoir y accéder depuis un autre fichier
 module.exports = router;

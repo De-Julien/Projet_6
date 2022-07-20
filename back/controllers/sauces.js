@@ -3,23 +3,30 @@ const Sauces = require('../models/Sauces');
 
 function formatError(res, error) {
     if (error.name === "CastError") {
-        res.status(400).json({ message: "Le format est incorrect !!" })
+        res.status(400).json({ message: "Le format de la demande est incorrect !!" })
     } else {
         res.status(500).json({ message: "Une erreur est survenue !!" })
     }
 };
-
-
 exports.postSauces = (req, res, next) => {
-    const createSauces = new Sauces({
-        userId: req.auth.userId,
-        name: req.body.name
-    })
-    createSauces.save()
-        .then(() => res.status(201).json({
-            message: 'Sauces créé !'
-        }))
-        .catch(error => res.status(400).json({ error }))
+    if (req.body.userId === req.auth.userId) {
+        const createSauces = new Sauces({
+            userId: req.auth.userId,
+            name: req.body.name
+            //manufacturer: req.body.manufacturer,
+            //description: req.body.description,
+            //mainPepper: req.body.mainPepper,
+            //imageUrl: req.body.imageUrl
+        })
+        createSauces.save()
+            .then(() => res.status(201).json({
+                message: 'Sauces créé !'
+            }))
+            .catch(error => res.status(400).json({ error }))
+
+    } else {
+        res.status(401).json({ message: "Autorisation refusé, l'ID utilisateur n'est pas correcte !!" })
+    }
 };
 
 exports.getAllSauces = (req, res, next) => {
@@ -43,9 +50,14 @@ exports.getOneSauces = (req, res, next) => {
 };
 
 exports.updateOneSauces = (req, res, next) => {
-    Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: "La sauce à été modifiée !!" }))
-        .catch(error => formatError(res, error));
+    if (req.body.userId === req.auth.userId) {
+        console.log(req.params.id);
+        Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+            .then(() => res.status(200).json({ message: "La sauce à été modifiée !!" }))
+            .catch(error => formatError(res, error));
+    } else {
+        res.status(401).json({ message: "Autorisation refusé, l'ID utilisateur n'est pas correcte !!" })
+    }
 };
 
 exports.deleteOneSauces = (req, res, next) => {
@@ -53,7 +65,7 @@ exports.deleteOneSauces = (req, res, next) => {
         .then((del) => {
             console.log(del);
             if (del) {
-                res.status(200).json({ message : "La sauce à été supprimée !!" })
+                res.status(200).json({ message: "La sauce à été supprimée !!" })
             } else {
                 res.status(404).json({ message: "La sauce n'existe pas !!" })
             }
