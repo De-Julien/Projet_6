@@ -1,4 +1,5 @@
 // importation du modèle
+const { parse } = require('dotenv');
 const Sauces = require('../models/Sauces');
 
 function formatError(res, error) {
@@ -9,24 +10,18 @@ function formatError(res, error) {
     }
 };
 exports.postSauces = (req, res, next) => {
-    if (req.body.userId === req.auth.userId) {
-        const createSauces = new Sauces({
-            userId: req.auth.userId,
-            name: req.body.name
-            //manufacturer: req.body.manufacturer,
-            //description: req.body.description,
-            //mainPepper: req.body.mainPepper,
-            //imageUrl: req.body.imageUrl
-        })
-        createSauces.save()
-            .then(() => res.status(201).json({
-                message: 'Sauces créé !'
-            }))
-            .catch(error => res.status(400).json({ error }))
-
-    } else {
-        res.status(401).json({ message: "Autorisation refusé, l'ID utilisateur n'est pas correcte !!" })
-    }
+    const sauceObjet = JSON.parse(req.body.sauce);
+    console.log(sauceObjet);
+    const createSauces = new Sauces({
+        ...sauceObjet,
+        userId: req.auth.userId,
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${req.file.filename}`
+    });
+    createSauces.save()
+        .then(() => res.status(201).json({
+            message: 'Sauces créé !'
+        }))
+        .catch(error => res.status(400).json({ error }))
 };
 
 exports.getAllSauces = (req, res, next) => {
@@ -50,14 +45,9 @@ exports.getOneSauces = (req, res, next) => {
 };
 
 exports.updateOneSauces = (req, res, next) => {
-    if (req.body.userId === req.auth.userId) {
-        console.log(req.params.id);
-        Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-            .then(() => res.status(200).json({ message: "La sauce à été modifiée !!" }))
-            .catch(error => formatError(res, error));
-    } else {
-        res.status(401).json({ message: "Autorisation refusé, l'ID utilisateur n'est pas correcte !!" })
-    }
+    Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+        .then(() => res.status(200).json({ message: "La sauce à été modifiée !!" }))
+        .catch(error => formatError(res, error));
 };
 
 exports.deleteOneSauces = (req, res, next) => {

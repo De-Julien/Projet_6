@@ -13,7 +13,7 @@ const multer = require('../middleware/multer');
 // utilise la fonction router
 const router = express.Router();
 
-router.post("/", auth, saucesCtrl.postSauces);
+router.post("/", auth, multer, saucesCtrl.postSauces);
 router.get("/", auth, saucesCtrl.getAllSauces);
 router.get("/:id", auth, saucesCtrl.getOneSauces);
 router.put("/:id", auth, saucesCtrl.updateOneSauces);
