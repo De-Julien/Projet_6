@@ -11,7 +11,6 @@ function formatError(res, error) {
 };
 exports.postSauces = (req, res, next) => {
     const sauceObjet = JSON.parse(req.body.sauce);
-    console.log(sauceObjet);
     const createSauces = new Sauces({
         ...sauceObjet,
         userId: req.auth.userId,
@@ -45,9 +44,13 @@ exports.getOneSauces = (req, res, next) => {
 };
 
 exports.updateOneSauces = (req, res, next) => {
-    Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    if(req.file) {
+
+    } else {
+        Sauces.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
         .then(() => res.status(200).json({ message: "La sauce à été modifiée !!" }))
         .catch(error => formatError(res, error));
+    }
 };
 
 exports.deleteOneSauces = (req, res, next) => {

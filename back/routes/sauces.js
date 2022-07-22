@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/", auth, multer, saucesCtrl.postSauces);
 router.get("/", auth, saucesCtrl.getAllSauces);
 router.get("/:id", auth, saucesCtrl.getOneSauces);
-router.put("/:id", auth, saucesCtrl.updateOneSauces);
+router.put("/:id", auth, multer, saucesCtrl.updateOneSauces);
 router.delete("/:id", auth, saucesCtrl.deleteOneSauces);
 
 // exportation pour pouvoir y accéder depuis un autre fichier
