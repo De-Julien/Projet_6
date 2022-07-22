@@ -1,7 +1,7 @@
-// importe le package mongoose
+// importation des modules
 const mongoose = require('mongoose');
 
-// modèle de base de donnée pour enregistrer un utilisateur
+// modèle pour enregistrer une sauce dans la base de données
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },

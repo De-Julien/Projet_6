@@ -1,22 +1,24 @@
-// importe le package express
+// importation des modules
 const express = require('express');
 
-// importe le dossier controllers
+// importation du dossier controllers
 const saucesCtrl = require('../controllers/sauces');
 
-// importe le dossier middleware pour les autorisations
+// importation du dossier middleware
 const auth = require('../middleware/auth');
-
-// importe le dossier middleware pour les autorisations
 const multer = require('../middleware/multer');
 
 // utilise la fonction router
 const router = express.Router();
 
-router.post("/", auth, multer, saucesCtrl.postSauces);
+// les routes possibles à utiliser
 router.get("/", auth, saucesCtrl.getAllSauces);
 router.get("/:id", auth, saucesCtrl.getOneSauces);
+
+router.post("/", auth, multer, saucesCtrl.postSauces);
+
 router.put("/:id", auth, multer, saucesCtrl.updateOneSauces);
+
 router.delete("/:id", auth, saucesCtrl.deleteOneSauces);
 
 // exportation pour pouvoir y accéder depuis un autre fichier

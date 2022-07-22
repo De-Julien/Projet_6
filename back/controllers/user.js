@@ -1,23 +1,21 @@
-// importation bcrypt pour chiffré les mdp
+// importation des modules
 const bcrypt = require('bcrypt');
-
-// importation de jsonwebtoken
 const jwt = require('jsonwebtoken');
 
-// importation du modèle
+// importation des modèles
 const User = require('../models/user');
 
-// exporte la fonction signup
+// fonction de la route POST (signup)
 exports.signup = (req, res, next) => {
-    // récupère le mdp envoyer pour l'inscription et le crypte
+    // récupère le Mdp envoyé pour l'inscription et le crypte
     bcrypt.hash(req.body.password, 10)
-        // créer un nouvel objet utilisateur en remplacant le mdp par le mdp hasher
+        // créer un nouvel objet utilisateur en remplaçant le Mdp par le Mdp hash
         .then(hash => {
             const createUser = new User({
                 email: req.body.email,
                 password: hash
             })
-            // sauvegarde le nouvel utilisateur dans la base de donnée
+            // sauvegarde le nouvel utilisateur dans la base de données
             createUser.save()
                 .then(() => res.status(201).json({
                     message: 'Utilisateur créé !'
@@ -27,25 +25,25 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({ error }))
 };
 
-// exporte la fonction login
+// fonction de la route POST (login)
 exports.login = (req, res, next) => {
-    // cherche dans la base de donnée si l'utilisateur est bien dedans
+    // regarde dans la base de données si l'utilisateur s'y trouve.
     User.findOne({ email: req.body.email })
         .then(user => {
-            // si l'utilisateur n'est pas dans la base de donnée
+            // si l'utilisateur n'est pas dans la base de données
             if (user === null) {
                 res.status(401).json({ message: "L'identifiant ou le mot de passe est incorrecte" })
-                // si l'utilisateur est dans la base de donnée
+                // si l'utilisateur est dans la base de données
             } else {
-                // verifie si le mot de passe est bien celui de la base de donnée
+                // vérifie si le mot de passe est bien celui de la base de données
                 bcrypt.compare(req.body.password, user.password)
                     .then(validPassword => {
-                        // si le mdp n'est pas bon
+                        // si le Mdp n'est pas bon
                         if (!validPassword) {
                             res.status(401).json({ message: "L'identifiant ou le mot de passe est incorrecte" })
-                        // si le mdp est correct    
+                        // si le Mdp est le bon 
                         } else {
-                            // envoie userId + token
+                            // envoie userId + token a l'utilisateur
                             res.status(200).json({
                                 userId: user._id,
                                 token: jwt.sign(

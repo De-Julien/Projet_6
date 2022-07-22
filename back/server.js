@@ -1,14 +1,14 @@
-// importe le package http de node.js pour créer le serveur
+// importation des modules
 const http = require('http');
 
-// importe le fichier app.js
+// importation de la route app
 const app = require('./app');
 
-// paramètrage du port avec la méthode set de Express
+// paramétrage du port avec la méthode set d'Express
 app.set('port', 3000);
 
-// la méthode createServer prend en argument la fonction qui sera appelé à chaque requête reçu.
+// la méthode createserver prend en argument la fonction qui sera appelée à chaque requête reçue
 const server = http.createServer(app);
 
-// le serveur écoute les requète sur le port
+// le serveur écoute les requêtes sur le port
 server.listen(3000);

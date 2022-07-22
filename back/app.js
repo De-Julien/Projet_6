@@ -1,27 +1,26 @@
-// importe le package express
+// importation des modules
 const express = require('express');
-// importe le package morgan qui log les requêtes
 const morgan = require('morgan');
-// importe la base de donnée mongodb
-const mongoose = require("./database/db")
-// importation path
 const path = require("path");
 
-// importe les routes utilisateurs
+// importation de la base de données
+const mongoose = require("./database/db")
+
+// importation des routes utilisateurs
 const userRoutes = require('./routes/user');
-// importe les routes sauces
+// importation des routes sauces
 const saucesRoutes = require('./routes/sauces');
 
 // créer une applicaltion express
 const app = express();
 
-// attrape les toutes les requètes de type json
+// attrape les toutes les requêtes du type json
 app.use (express.json());
 
-// log les requêtes et les reponses
+// log les requêtes et les réponses
 app.use(morgan("dev"));
 
-// pour que n'importe qui puisse se connecter sur l'api
+// restriction pour se connecter sur l'API
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -29,11 +28,12 @@ app.use((req, res, next) => {
     next();
   });
 
-// Route pour l'authentification
+// route pour l'authentification
 app.use("/api/auth", userRoutes);
-// Route pour les sauces
+// route pour les sauces
 app.use("/api/sauces", saucesRoutes);
-// Route pour les images
+// route pour les images
 app.use("/images", express.static(path.join(__dirname, "images")));
-// exportation de app.js pour pouvoir y accéder depuis un autre fichier
+
+// exportation pour pouvoir y accéder depuis un autre fichier
 module.exports = app;
