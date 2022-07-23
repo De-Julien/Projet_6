@@ -8,7 +8,7 @@ const Sauces = require('../models/Sauces');
 exports.postSauces = (req, res, next) => {
     // convertit la chaine de caractère en json
     const sauceObjet = JSON.parse(req.body.sauce);
-      // casse l'objet et change les données choisies
+    // casse l'objet et change les données choisies
     const createSauces = new Sauces({
         ...sauceObjet,
         userId: req.auth.userId,
@@ -41,7 +41,7 @@ exports.getOneSauces = (req, res, next) => {
                 res.status(404).json({ message: "La sauce n'existe pas !!" })
             }
         })
-        .catch(error => formatError(res, error));
+        .catch(error => res.status(500).json({ error }));
 };
 // fonction de la route PUT (updateOneSauces)
 exports.updateOneSauces = (req, res, next) => {
@@ -83,15 +83,25 @@ exports.updateOneSauces = (req, res, next) => {
 }
 // fonction de la route DELETE (deleteOneSauces)
 exports.deleteOneSauces = (req, res, next) => {
-    Sauces.deleteOne({ _id: req.params.id })
-        .then((del) => {
-            console.log(del);
-            if (del) {
-                res.status(200).json({ message: "La sauce à été supprimée !!" })
+    // trouve l'ID du produit dans la base de données
+    Sauces.findOne({ _id: req.params.id })
+        .then((oneSauces) => {
+            // contrôle si l'ID de la base de données est différent de celui du token
+            if (oneSauces.userId != req.auth.userId) {
+                res.status(401).json({ message: "autorisation refusé !!" });
             } else {
-                res.status(404).json({ message: "La sauce n'existe pas !!" })
+                // récupère l'image à modifier
+                const filename = oneSauces.imageUrl.split('/images/')[1];
+                console.log(filename);
+                // efface l'image sélectionner au-dessus
+                fs.unlink(`images/${filename}`, (error) => {
+                    if (error) throw error;
+                });
+                // efface la sauce selectionné de la base de données
+                Sauces.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "La sauce à été supprimée !!" }))
+                    .catch(error => res.status(500).json({ error }))
             }
         })
-        //.then(() => res.status(200).json({ message: "La sauce à été supprimée !!" }))
-        .catch(error => formatError(res, error));
+        .catch(() => res.status(404).json({ message: "La sauce n'existe pas !!" }));
 };
