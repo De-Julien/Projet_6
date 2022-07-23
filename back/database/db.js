@@ -14,4 +14,5 @@ mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASS
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+// exportation pour pouvoir y accéder depuis un autre fichier
 module.exports = mongoose;

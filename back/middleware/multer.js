@@ -1,4 +1,4 @@
-// importation de multer 
+// importation des modules
 const multer = require('multer');
 
 // gère les différentes extensions

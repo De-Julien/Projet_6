@@ -50,6 +50,10 @@ exports.updateOneSauces = (req, res, next) => {
         .then((oneSauces) => {
             // contrôle si l'ID de la base de données est différent de celui du token
             if (oneSauces.userId != req.auth.userId) {
+                // supprime l'image envoyé
+                fs.unlink(`images/${req.file.filename}`, (error) => {
+                    if (error) throw error;
+                });
                 res.status(401).json({ message: "autorisation refusé !!" });
             } else {
                 // Si un fichier est présent dans la requête
