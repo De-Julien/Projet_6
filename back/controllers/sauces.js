@@ -107,5 +107,5 @@ exports.deleteOneSauces = (req, res, next) => {
                     .catch(error => res.status(500).json({ error }))
             }
         })
-        .catch(() => res.status(404).json({ message: "La sauce n'existe pas !!" }));
+        .catch((error) => res.status(404).json({ error }));
 };

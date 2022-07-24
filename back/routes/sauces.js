@@ -3,6 +3,7 @@ const express = require('express');
 
 // importation du dossier controllers
 const saucesCtrl = require('../controllers/sauces');
+const likes = require('../controllers/like');
 
 // importation du dossier middleware
 const auth = require('../middleware/auth');
@@ -16,6 +17,7 @@ router.get("/", auth, saucesCtrl.getAllSauces);
 router.get("/:id", auth, saucesCtrl.getOneSauces);
 
 router.post("/", auth, multer, saucesCtrl.postSauces);
+router.post("/:id/like", auth, likes.sauceLike);
 
 router.put("/:id", auth, multer, saucesCtrl.updateOneSauces);
 
